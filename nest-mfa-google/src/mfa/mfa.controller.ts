@@ -79,7 +79,7 @@ export class MfaController {
     }
     req.user.isSecondFactorAuthenticated = true;
     const tfa_accessToken = await this.authService.generateAccessToken(req.user, true);
-    req.res.cookie('2fa_token', tfa_accessToken, {
+    req.res.cookie('two_fa_token', tfa_accessToken, {
       httpOnly: true,
       path: '/',
     });

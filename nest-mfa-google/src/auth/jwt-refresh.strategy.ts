@@ -7,9 +7,12 @@ import { Payload } from "../interfaces/payload.interface";
 import { User } from "src/users/users.entity";
 
 @Injectable()
-export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh-token') {
+export class JwtRefreshStrategy extends PassportStrategy(
+  Strategy, 
+  'jwt-refresh-token'
+) {
   constructor(
-    private readonly userService: UsersService,
+    private readonly userService: UsersService
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([

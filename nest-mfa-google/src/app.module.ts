@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './common/config/typeorm.config.service';
 import { MfaModule } from './mfa/mfa.module';
+import { TestModule } from './test/test.module';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { MfaModule } from './mfa/mfa.module';
     TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
     AuthModule, 
     UsersModule, 
-    MfaModule,
+    MfaModule, TestModule,
   ],
   controllers: [AppController],
   providers: [AppService],
