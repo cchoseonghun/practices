@@ -17,6 +17,7 @@ export class MfaService {
     const secret = authenticator.generateSecret();
     const otpAuthUrl = authenticator.keyuri(user.email, this.configService.get('MFA_APP_NAME'), secret);
     await this.userService.setMfaSecret(secret, user.id);
+    
     return {
       secret, 
       otpAuthUrl, 

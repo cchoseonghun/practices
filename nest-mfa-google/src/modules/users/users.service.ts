@@ -22,17 +22,4 @@ export class UsersService {
       mfaSecret: secret, 
     });
   }
-
-  async turnOnMfa(userId: number): Promise<UpdateResult> {
-    return await this.userRepository.update(userId, {
-      isMfaEnabled: true,
-    });
-  }
-
-  async turnOffMfa(userId: number): Promise<UpdateResult> {
-    return await this.userRepository.update(userId, {
-      mfaSecret: null,
-      isMfaEnabled: false,
-    })
-  }
 }

@@ -20,6 +20,6 @@ export class User {
   @Column({ nullable: true })
   mfaSecret: string;
 
-  @Column({ default: false })
-  isMfaEnabled: boolean;
+  // @Column({ default: true })
+  // isMfaEnabled: boolean;
 }

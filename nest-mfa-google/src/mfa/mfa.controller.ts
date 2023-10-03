@@ -1,4 +1,4 @@
-import { Body, ClassSerializerInterceptor, Controller, ForbiddenException, Post, Req, Res, UnauthorizedException, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Post, Req, Res, UnauthorizedException, UseGuards, UseInterceptors } from '@nestjs/common';
 import { MfaService } from './mfa.service';
 import { JwtAccessAuthGuard } from 'src/auth/guards/jwt-access.guard';
 import { Response } from 'express';
@@ -20,45 +20,10 @@ export class MfaController {
   @UseGuards(JwtAccessAuthGuard)
   async register(
     @Res() res: Response, 
-    @Req() request: RequestWithUser
+    @Req() req: RequestWithUser
   ) {
-    const { otpAuthUrl } = await this.mfaService.generateMfaSecret(request.user);
+    const { otpAuthUrl } = await this.mfaService.generateMfaSecret(req.user);
     return await this.mfaService.pipeQrCodeStream(res, otpAuthUrl);
-  }
-
-  private async mfaCodeValidation(mfaCode: MfaDto['mfaCode'], user: RequestWithUser['user']) {
-    const isCodeValidated = await this.mfaService.isMfaCodeValid(mfaCode, user);
-    if (!isCodeValidated) {
-      throw new UnauthorizedException('Invalid Authentication-Code');
-    }
-  }
-
-  @Post('turn-on')
-  @UseGuards(JwtAccessAuthGuard)
-  async turnOnMfa(
-    @Req() req: RequestWithUser,
-    @Body() mfaDto: MfaDto
-  ) {
-    await this.mfaCodeValidation(mfaDto.mfaCode, req.user);
-    await this.userService.turnOnMfa(req.user.id);
-
-    return {
-      msg: "MFA turned on"
-    }
-  }
-
-  @Post('turn-off')
-  @UseGuards(JwtAccessAuthGuard)
-  async turnOffMfa(
-    @Req() req: RequestWithUser,
-    @Body() mfaDto: MfaDto
-  ) {
-    await this.mfaCodeValidation(mfaDto.mfaCode, req.user);
-    await this.userService.turnOffMfa(req.user.id);
-
-    return {
-      msg: "MFA turned off"
-    }
   }
 
   @Post('authenticate')
@@ -68,16 +33,20 @@ export class MfaController {
     @Body() mfaDto: MfaDto
   ) {
     await this.mfaCodeValidation(mfaDto.mfaCode, req.user);
-    if (!req.user.isMfaEnabled) {
-      throw new ForbiddenException('MFA is not enabled');
-    }
     req.user.isMfaPassed = true;
-    const tfa_accessToken = await this.authService.generateAccessToken(req.user, true);
+    const mfa_token = await this.authService.generateAccessToken(req.user, true);
 
-    req.res.cookie('mfa_token', tfa_accessToken, {
+    req.res.cookie('mfa_token', mfa_token, {
       httpOnly: true,
       path: '/',
     });
     return req.user;
+  }
+
+  private async mfaCodeValidation(mfaCode: MfaDto['mfaCode'], user: RequestWithUser['user']) {
+    const isCodeValidated = await this.mfaService.isMfaCodeValid(mfaCode, user);
+    if (!isCodeValidated) {
+      throw new UnauthorizedException('Invalid Authentication-Code');
+    }
   }
 }
