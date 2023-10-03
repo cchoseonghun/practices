@@ -28,37 +28,37 @@ export class MfaController {
 
   @Post('turn-on')
   @UseGuards(JwtAccessAuthGuard)
-  async turnOnTwoFactorAuthentication(
+  async turnOnMfa(
     @Req() req: RequestWithUser,
     @Body() mfaDto: MfaDto
   ) {
-    const isCodeValidated = await this.mfaService.isTwoFactorAuthenticationCodeValid(
-      mfaDto.twoFactorAuthenticationCode, req.user
+    const isCodeValidated = await this.mfaService.isMfaCodeValid(
+      mfaDto.mfaCode, req.user
     );
     if (!isCodeValidated) {
       throw new UnauthorizedException('Invalid Authentication-Code');
     }
-    await this.userService.turnOnTwoFactorAuthentication(req.user.id);
+    await this.userService.turnOnMfa(req.user.id);
     return {
-      msg: "TwoFactorAuthentication turned on"
+      msg: "MFA turned on"
     }
   }
 
   @Post('turn-off')
   @UseGuards(JwtAccessAuthGuard)
-  async turnOffTwoFactorAuthentication(
+  async turnOffMfa(
     @Req() req: RequestWithUser,
     @Body() mfaDto: MfaDto
   ) {
-    const isCodeValidated = await this.mfaService.isTwoFactorAuthenticationCodeValid(
-      mfaDto.twoFactorAuthenticationCode, req.user
+    const isCodeValidated = await this.mfaService.isMfaCodeValid(
+      mfaDto.mfaCode, req.user
     );
     if (!isCodeValidated) {
       throw new UnauthorizedException('Invalid Authentication-Code');
     }
-    await this.userService.turnOffTwoFactorAuthentication(req.user.id);
+    await this.userService.turnOffMfa(req.user.id);
     return {
-      msg: "TwoFactorAuthentication turned off"
+      msg: "MFA turned off"
     }
   }
 
@@ -68,18 +68,18 @@ export class MfaController {
     @Req() req: RequestWithUser,
     @Body() mfaDto: MfaDto
   ) {
-    const isCodeValidated = await this.mfaService.isTwoFactorAuthenticationCodeValid(
-      mfaDto.twoFactorAuthenticationCode, req.user
+    const isCodeValidated = await this.mfaService.isMfaCodeValid(
+      mfaDto.mfaCode, req.user
     );
-    if (!req.user.isTwoFactorAuthenticationEnabled) {
-      throw new ForbiddenException('Two-Factor Authentication is not enabled');
+    if (!req.user.isMfaEnabled) {
+      throw new ForbiddenException('MFA is not enabled');
     }
     if (!isCodeValidated) {
       throw new UnauthorizedException('Invalid Authentication-Code');
     }
-    req.user.isSecondFactorAuthenticated = true;
+    req.user.isMfaPassed = true;
     const tfa_accessToken = await this.authService.generateAccessToken(req.user, true);
-    req.res.cookie('two_fa_token', tfa_accessToken, {
+    req.res.cookie('mfa_token', tfa_accessToken, {
       httpOnly: true,
       path: '/',
     });

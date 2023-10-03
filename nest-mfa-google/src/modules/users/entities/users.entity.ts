@@ -28,5 +28,5 @@ export class User {
 
   // 2fa 사용여부 확인 
   @Column({ default: false })
-  isTwoFactorAuthenticationEnabled: boolean;
+  isMfaEnabled: boolean;
 }

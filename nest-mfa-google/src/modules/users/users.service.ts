@@ -68,17 +68,17 @@ export class UsersService {
     });
   }
 
-  async turnOnTwoFactorAuthentication(userId: number): Promise<UpdateResult> {
+  async turnOnMfa(userId: number): Promise<UpdateResult> {
     return await this.userRepository.update(userId, {
-      isTwoFactorAuthenticationEnabled: true,
+      isMfaEnabled: true,
     });
   }
 
-  async turnOffTwoFactorAuthentication(userId: number): Promise<UpdateResult> {
+  async turnOffMfa(userId: number): Promise<UpdateResult> {
     return await this.userRepository.update(userId, {
       // 유저가 2fa 활성화 여부를 끄게 되면 시크릿값또한 null로 수정하여 준다.
       mfaSecret: null,
-      isTwoFactorAuthenticationEnabled: false,
+      isMfaEnabled: false,
     })
   }
 }

@@ -1,3 +1,3 @@
 export class MfaDto {
-  twoFactorAuthenticationCode: string; 
+  mfaCode: string; 
 }

@@ -30,13 +30,13 @@ export class AuthService {
     return user;
   }
 
-  async generateAccessToken(user: User, isSecondFactorAuthenticated = false): Promise<string> {
+  async generateAccessToken(user: User, isMfaPassed = false): Promise<string> {
     const payload: Payload = {
       id: user.id,
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
-      isSecondFactorAuthenticated: isSecondFactorAuthenticated,
+      isMfaPassed: isMfaPassed,
     }
     return this.jwtService.signAsync(payload);
   }

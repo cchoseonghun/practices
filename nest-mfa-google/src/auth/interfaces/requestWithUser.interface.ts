@@ -3,6 +3,6 @@ import { User } from "src/modules/users/entities/users.entity";
 
 export interface RequestWithUser extends Request {
   user: User & {
-    isSecondFactorAuthenticated?: boolean;
+    isMfaPassed?: boolean;
   };
 }

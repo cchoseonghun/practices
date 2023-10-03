@@ -15,7 +15,7 @@ export class MfaService {
 
   public async generateMfaSecret(user: User) {
     const secret = authenticator.generateSecret();
-    const otpAuthUrl = authenticator.keyuri(user.email, this.configService.get('TWO_FACTOR_AUTHENTICATION_APP_NAME'), secret);
+    const otpAuthUrl = authenticator.keyuri(user.email, this.configService.get('MFA_APP_NAME'), secret);
     await this.userService.setMfaSecret(secret, user.id);
     return {
       secret, 
@@ -28,14 +28,14 @@ export class MfaService {
     return toFileStream(stream, otpAuthUrl);
   }
 
-  public async isTwoFactorAuthenticationCodeValid(twoFactorAuthenticationCode: string, user: User) {
+  public async isMfaCodeValid(mfaCode: string, user: User) {
     if (!user.mfaSecret) {
       return false; // 혹은 다른 예외 처리 가능
     }
     // otplib에서 불러온 authenticator의 verify 메서드를 사용해 올바른 인증 코드인지를 검증
     // 이때, 클라이언트에서 받아온 인증 코드와 서버에 저장된 시크릿 키를 사용한다.
     return authenticator.verify({
-      token: twoFactorAuthenticationCode,
+      token: mfaCode,
       secret: user.mfaSecret,
     })
   }

@@ -6,9 +6,9 @@ import { Payload } from 'src/auth/interfaces/payload.interface';
 import { UsersService } from 'src/modules/users/users.service';
 
 @Injectable()
-export class JwtTwoFactorStrategy extends PassportStrategy(
+export class JwtMfaStrategy extends PassportStrategy(
   Strategy,
-  'jwt-two-factor'
+  'jwt-mfa'
 ) {
   constructor(
     private readonly userService: UsersService
@@ -16,8 +16,7 @@ export class JwtTwoFactorStrategy extends PassportStrategy(
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: Request) => {
-          // return req?.cookies?.two_fa_token;
-          return req?.cookies?.two_fa_token;
+          return req?.cookies?.mfa_token;
         },
       ]),
       secretOrKey: process.env.JWT_ACCESS_SECRET,
@@ -26,10 +25,10 @@ export class JwtTwoFactorStrategy extends PassportStrategy(
 
   async validate(payload: Payload) {
     const user = await this.userService.findUserById(payload.id);
-    if (!user.isTwoFactorAuthenticationEnabled) {
+    if (!user.isMfaEnabled) {
       return user;
     }
-    if (payload.isSecondFactorAuthenticated) {
+    if (payload.isMfaPassed) {
       return user;
     }
   }
