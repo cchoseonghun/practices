@@ -1,7 +1,7 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import JwtTwoFactorGuard from 'src/auth/jwt-mfa.guard';
-import { User } from 'src/users/users.entity';
-import { UsersService } from 'src/users/users.service';
+import JwtTwoFactorGuard from 'src/auth/guards/jwt-mfa.guard';
+import { User } from 'src/modules/users/entities/users.entity';
+import { UsersService } from 'src/modules/users/users.service';
 
 @Controller('api/test')
 export class TestController {

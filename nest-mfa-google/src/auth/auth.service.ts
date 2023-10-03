@@ -1,12 +1,12 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { LoginDto } from './auth.dto';
-import { User } from 'src/users/users.entity';
-import { UsersService } from 'src/users/users.service';
+import { LoginDto } from './dtos/auth.dto';
+import { User } from 'src/modules/users/entities/users.entity';
+import { UsersService } from 'src/modules/users/users.service';
 import { ConfigService } from '@nestjs/config';
 // import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { Payload } from '../interfaces/payload.interface';
-import { RefreshTokenDto } from './refresh-token.dto';
+import { Payload } from './interfaces/payload.interface';
+import { RefreshTokenDto } from './dtos/refresh-token.dto';
 
 @Injectable()
 export class AuthService {

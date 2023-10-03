@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './users.entity';
+import { User } from './entities/users.entity';
 // import bcrypt from 'bcrypt'; // 아래 코드로 해야 동작
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';

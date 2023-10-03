@@ -2,15 +2,15 @@ import { Module, forwardRef } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/users/users.entity';
-import { UsersService } from 'src/users/users.service';
-import { UsersModule } from 'src/users/users.module';
+import { User } from 'src/modules/users/entities/users.entity';
+import { UsersService } from 'src/modules/users/users.service';
+import { UsersModule } from 'src/modules/users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtRefreshStrategy } from './jwt-refresh.strategy';
-import { JwtAccessAuthGuard } from './jwt-access.guard';
-import { JwtRefreshGuard } from './jwt-refresh.guard';
+import { JwtAccessAuthGuard } from './guards/jwt-access.guard';
+import { JwtRefreshStrategy } from './guards/jwt-refresh.strategy';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 
 @Module({
   imports: [

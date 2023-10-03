@@ -1,12 +1,12 @@
 import { Body, Controller, Post, Get, Res, UseGuards, Req, UnauthorizedException } from '@nestjs/common';
-import { LoginDto } from './auth.dto';
+import { LoginDto } from './dtos/auth.dto';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
-import { UsersService } from 'src/users/users.service';
-import { User } from 'src/users/users.entity';
-import { JwtAccessAuthGuard } from 'src/auth/jwt-access.guard';
-import { RefreshTokenDto } from './refresh-token.dto';
-import { JwtRefreshGuard } from './jwt-refresh.guard';
+import { UsersService } from 'src/modules/users/users.service';
+import { User } from 'src/modules/users/entities/users.entity';
+import { JwtAccessAuthGuard } from 'src/auth/guards/jwt-access.guard';
+import { RefreshTokenDto } from './dtos/refresh-token.dto';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 
 @Controller('api/auth')
 export class AuthController {

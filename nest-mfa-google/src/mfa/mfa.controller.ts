@@ -1,10 +1,10 @@
 import { Body, ClassSerializerInterceptor, Controller, ForbiddenException, Post, Req, Res, UnauthorizedException, UseGuards, UseInterceptors } from '@nestjs/common';
 import { MfaService } from './mfa.service';
-import { JwtAccessAuthGuard } from 'src/auth/jwt-access.guard';
+import { JwtAccessAuthGuard } from 'src/auth/guards/jwt-access.guard';
 import { Response } from 'express';
-import { RequestWithUser } from 'src/interfaces/requestWithUser.interface';
-import { MfaDto } from './mfa.dto';
-import { UsersService } from 'src/users/users.service';
+import { RequestWithUser } from 'src/auth/interfaces/requestWithUser.interface';
+import { MfaDto } from './dtos/mfa.dto';
+import { UsersService } from 'src/modules/users/users.service';
 import { AuthService } from 'src/auth/auth.service';
 
 @Controller('api/mfa')

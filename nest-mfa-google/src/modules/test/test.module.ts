@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TestController } from './test.controller';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from 'src/modules/users/users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/users/users.entity';
-import JwtTwoFactorGuard from 'src/auth/jwt-mfa.guard';
-import { JwtTwoFactorStrategy } from 'src/auth/jwt-mfa.strategy';
+import { User } from 'src/modules/users/entities/users.entity';
+import JwtTwoFactorGuard from 'src/auth/guards/jwt-mfa.guard';
+import { JwtTwoFactorStrategy } from 'src/auth/guards/jwt-mfa.strategy';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])], 
