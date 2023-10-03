@@ -25,9 +25,6 @@ export class JwtMfaStrategy extends PassportStrategy(
 
   async validate(payload: Payload) {
     const user = await this.userService.findUserById(payload.id);
-    // if (!user.isMfaEnabled) {
-    //   return user;
-    // }
     if (payload.isMfaPassed) {
       return user;
     }

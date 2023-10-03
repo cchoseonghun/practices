@@ -4,7 +4,6 @@ import { JwtAccessAuthGuard } from 'src/auth/guards/jwt-access.guard';
 import { Response } from 'express';
 import { RequestWithUser } from 'src/auth/interfaces/requestWithUser.interface';
 import { MfaDto } from './dtos/mfa.dto';
-import { UsersService } from 'src/modules/users/users.service';
 import { AuthService } from 'src/auth/auth.service';
 
 @Controller('api/mfa')
@@ -12,7 +11,6 @@ import { AuthService } from 'src/auth/auth.service';
 export class MfaController {
   constructor(
     private readonly mfaService: MfaService, 
-    private readonly userService: UsersService, 
     private readonly authService: AuthService, 
   ) {}
 
@@ -32,7 +30,9 @@ export class MfaController {
     @Req() req: RequestWithUser,
     @Body() mfaDto: MfaDto
   ) {
-    await this.mfaCodeValidation(mfaDto.mfaCode, req.user);
+    if (!await this.mfaService.isMfaCodeValid(mfaDto.mfaCode, req.user)) {
+      throw new UnauthorizedException('Invalid Authentication-Code');
+    }
     req.user.isMfaPassed = true;
     const mfa_token = await this.authService.generateAccessToken(req.user, true);
 
@@ -41,12 +41,5 @@ export class MfaController {
       path: '/',
     });
     return req.user;
-  }
-
-  private async mfaCodeValidation(mfaCode: MfaDto['mfaCode'], user: RequestWithUser['user']) {
-    const isCodeValidated = await this.mfaService.isMfaCodeValid(mfaCode, user);
-    if (!isCodeValidated) {
-      throw new UnauthorizedException('Invalid Authentication-Code');
-    }
   }
 }
