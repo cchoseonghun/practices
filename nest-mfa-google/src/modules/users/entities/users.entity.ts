@@ -18,15 +18,8 @@ export class User {
   lastName: string;
 
   @Column({ nullable: true })
-  currentRefreshToken: string;
-
-  @Column({ type: 'datetime', nullable: true })
-  currentRefreshTokenExp: Date;
-
-  @Column({ nullable: true })
   mfaSecret: string;
 
-  // 2fa 사용여부 확인 
   @Column({ default: false })
   isMfaEnabled: boolean;
 }

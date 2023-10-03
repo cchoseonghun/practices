@@ -9,8 +9,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtAccessAuthGuard } from './guards/jwt-access.guard';
-import { JwtRefreshStrategy } from './guards/jwt-refresh.strategy';
-import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 
 @Module({
   imports: [
@@ -29,6 +27,6 @@ import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
     forwardRef(() => UsersModule),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UsersService, JwtRefreshStrategy, JwtAccessAuthGuard, JwtRefreshGuard], 
+  providers: [AuthService, UsersService, JwtAccessAuthGuard], 
 })
 export class AuthModule {}
