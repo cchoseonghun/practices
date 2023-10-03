@@ -40,8 +40,9 @@ export class AuthController {
 
   @Post('logout')
   @UseGuards(JwtAccessAuthGuard)
-  async logout(@Req() req: any, @Res() res: Response): Promise<any> {
+  async logout(@Res() res: Response): Promise<any> {
     res.clearCookie('access_token');
+    res.clearCookie('mfa_token');
     return res.send({
       message: 'logout success'
     });
