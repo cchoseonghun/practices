@@ -26,19 +26,22 @@ export class MfaController {
     return await this.mfaService.pipeQrCodeStream(res, otpAuthUrl);
   }
 
+  private async mfaCodeValidation(mfaCode: MfaDto['mfaCode'], user: RequestWithUser['user']) {
+    const isCodeValidated = await this.mfaService.isMfaCodeValid(mfaCode, user);
+    if (!isCodeValidated) {
+      throw new UnauthorizedException('Invalid Authentication-Code');
+    }
+  }
+
   @Post('turn-on')
   @UseGuards(JwtAccessAuthGuard)
   async turnOnMfa(
     @Req() req: RequestWithUser,
     @Body() mfaDto: MfaDto
   ) {
-    const isCodeValidated = await this.mfaService.isMfaCodeValid(
-      mfaDto.mfaCode, req.user
-    );
-    if (!isCodeValidated) {
-      throw new UnauthorizedException('Invalid Authentication-Code');
-    }
+    await this.mfaCodeValidation(mfaDto.mfaCode, req.user);
     await this.userService.turnOnMfa(req.user.id);
+
     return {
       msg: "MFA turned on"
     }
@@ -50,13 +53,9 @@ export class MfaController {
     @Req() req: RequestWithUser,
     @Body() mfaDto: MfaDto
   ) {
-    const isCodeValidated = await this.mfaService.isMfaCodeValid(
-      mfaDto.mfaCode, req.user
-    );
-    if (!isCodeValidated) {
-      throw new UnauthorizedException('Invalid Authentication-Code');
-    }
+    await this.mfaCodeValidation(mfaDto.mfaCode, req.user);
     await this.userService.turnOffMfa(req.user.id);
+
     return {
       msg: "MFA turned off"
     }
@@ -68,17 +67,13 @@ export class MfaController {
     @Req() req: RequestWithUser,
     @Body() mfaDto: MfaDto
   ) {
-    const isCodeValidated = await this.mfaService.isMfaCodeValid(
-      mfaDto.mfaCode, req.user
-    );
+    await this.mfaCodeValidation(mfaDto.mfaCode, req.user);
     if (!req.user.isMfaEnabled) {
       throw new ForbiddenException('MFA is not enabled');
     }
-    if (!isCodeValidated) {
-      throw new UnauthorizedException('Invalid Authentication-Code');
-    }
     req.user.isMfaPassed = true;
     const tfa_accessToken = await this.authService.generateAccessToken(req.user, true);
+
     req.res.cookie('mfa_token', tfa_accessToken, {
       httpOnly: true,
       path: '/',
