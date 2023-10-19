@@ -1,16 +1,15 @@
-import { Entity, Column, PrimaryColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { CompanyProduct } from './companyProduct.entity';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity({ schema: 'nest-excel', name: 'company' })
 export class Company {
   @PrimaryGeneratedColumn()
-  companyIdx: number;
+  company_idx: number;
 
   @Column()
-  nameKor: string;
+  name_kor: string;
 
   @Column()
-  nameEng: string;
+  name_eng: string;
 
   // @OneToMany((type) => CompanyProduct, (companyProduct) => companyProduct.company)
   // companyProducts: CompanyProduct[];

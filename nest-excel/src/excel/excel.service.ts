@@ -28,20 +28,20 @@ export class ExcelService {
 
   async saveToDatabase(row: any) {
     const companyEntity = new Company();
-    companyEntity.companyIdx = parseInt(row[1]);
-    companyEntity.nameKor = row[2];
-    companyEntity.nameEng = row[3];
+    companyEntity.company_idx                 = parseInt(row[1]);
+    companyEntity.name_kor                    = row[2];
+    companyEntity.name_eng                    = row[3];
 
     const companyProductEntity = new CompanyProduct();
-    companyProductEntity.companyProductIdx = parseInt(row[4]);
-    companyProductEntity.category = row[5];
-    companyProductEntity.categoryDetail = row[6];
-    companyProductEntity.nameKor = row[7];
-    companyProductEntity.nameEng = row[8];
-    companyProductEntity.companyIdx = companyEntity.companyIdx;
+    companyProductEntity.company_product_idx  = parseInt(row[4]);
+    companyProductEntity.category             = row[5];
+    companyProductEntity.category_detail      = row[6];
+    companyProductEntity.name_kor             = row[7];
+    companyProductEntity.name_eng             = row[8];
+    companyProductEntity.company_idx = companyEntity.company_idx;
 
     const countCompanyByIdx = await this.companyRepository.count({
-      where: { companyIdx: companyEntity.companyIdx }
+      where: { company_idx: companyEntity.company_idx }
     });
 
     if (countCompanyByIdx === 0) {
@@ -49,7 +49,7 @@ export class ExcelService {
     }
 
     const countCompanyProductByIdx = await this.companyProductRepository.count({
-      where: { companyProductIdx: companyProductEntity.companyProductIdx }
+      where: { company_product_idx: companyProductEntity.company_product_idx }
     });
 
     if (countCompanyProductByIdx === 0) {

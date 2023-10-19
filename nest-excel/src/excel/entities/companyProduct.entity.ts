@@ -1,27 +1,27 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, PrimaryGeneratedColumn, JoinColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, JoinColumn } from 'typeorm';
 import { Company } from './company.entity';
 
-@Entity()
+@Entity({ schema: 'nest-excel', name: 'company_product' })
 export class CompanyProduct {
   @PrimaryGeneratedColumn()
-  companyProductIdx: number;
+  company_product_idx: number;
 
   @Column()
-  companyIdx: number;
+  company_idx: number;
 
   @Column()
   category: string;
 
   @Column()
-  categoryDetail: string;
+  category_detail: string;
 
   @Column()
-  nameKor: string;
+  name_kor: string;
 
   @Column()
-  nameEng: string;
+  name_eng: string;
 
-  @ManyToOne(() => Company, (company) => company.companyIdx)
-  @JoinColumn({ name: 'companyIdx' })
+  @ManyToOne(() => Company, (company) => company.company_idx)
+  @JoinColumn({ name: 'company_idx' })
   company: Company;
 }
