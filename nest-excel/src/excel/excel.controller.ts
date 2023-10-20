@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { ExcelService } from './excel.service';
 import * as path from 'path';
 
@@ -23,7 +23,19 @@ export class ExcelController {
 
   @Get()
   async uploadExcel() {
-    const excelFilePath = path.join(__dirname, '../../src/excel/sampleExcelFile.xlsx');
+    const excelFilePath = path.join(__dirname, '../../src/target/sampleExcelFile.xlsx');
+
+    const data = await this.excelService.readExcelFile(excelFilePath);
+    await this.excelService.saveToDatabaseSynchronously(data);
+
+    return { message: 'Excel 데이터가 성공적으로 저장되었습니다.' };
+  }
+
+  @Get(':filename')
+  async test(
+    @Param('filename') filename: string, 
+  ) {
+    const excelFilePath = path.join(__dirname, `../../src/target/${filename}.xlsx`);
 
     const data = await this.excelService.readExcelFile(excelFilePath);
     await this.excelService.saveToDatabaseSynchronously(data);
