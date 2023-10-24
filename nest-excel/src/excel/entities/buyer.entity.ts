@@ -1,28 +1,55 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, Index } from 'typeorm';
 
 @Entity()
 export class Buyer {
   @PrimaryGeneratedColumn()
   buyer_idx: number;
 
-  @Column({ nullable: true })
-  business_type: string;
+  @Column('varchar')
+  company_name: string;
 
-  @Column({ nullable: true })
-  industry: string;
+  @Column('varchar')
+  ceo_name: string;
 
-  @Column({ nullable: true })
-  category_code_main: string;
+  @Column('varchar')
+  postal_code: string;
 
-  @Column({ nullable: true })
-  category_code_sub: string;
+  @Column('text')
+  company_address: string;
 
-  @Column({ nullable: true })
-  interested_industry: string;
+  @Column('varchar')
+  website_url: string;
 
-  @Column({ nullable: true })
-  interested_region: string;
+  @Column('varchar')
+  business_type_codes: string;
 
-  @Column({ nullable: true })
-  interested_country: string;
+  @Column('varchar')
+  industry_codes: string;
+
+  @Column('varchar')
+  intro_origin: string;
+
+  @Column('varchar')
+  intro_saved: string;
+
+  @Column('varchar')
+  evidence_origin: string;
+
+  @Column('varchar')
+  evidence_saved: string;
+
+  @Column('varchar')
+  interested_category_codes_main: string;
+
+  @Column('varchar')
+  interested_category_codes_sub: string;
+
+  @Column('varchar')
+  interested_industry_codes: string;
+
+  @Column('varchar')
+  interested_regions: string;
+
+  @Column('varchar')
+  interested_countries: string;
 }
