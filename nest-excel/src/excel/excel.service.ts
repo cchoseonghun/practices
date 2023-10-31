@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Company } from './entities/company.entity';
+// import { Company } from './entities/company.entity';
 import { Repository } from 'typeorm';
 import * as ExcelJS from 'exceljs';
-import { CompanyProduct } from './entities/companyProduct.entity';
+// import { CompanyProduct } from './entities/companyProduct.entity';
 import { Seller } from './entities/seller.entity';
 import { Country } from './entities/country.entity';
 import { Buyer } from './entities/buyer.entity';
@@ -455,7 +455,6 @@ const sample3 = {
   AL: 'Europe',
   AM: 'Asia',
   AO: 'Africa',
-  AQ: null,
   AR: 'Americas',
   AS: 'Oceania',
   AT: 'Europe',
@@ -701,11 +700,11 @@ const sample3 = {
 @Injectable()
 export class ExcelService {
   constructor(
-    @InjectRepository(Company) private readonly companyRepository: Repository<Company>,
-    @InjectRepository(CompanyProduct) private readonly companyProductRepository: Repository<CompanyProduct>,
-    @InjectRepository(Seller) private readonly sellerRepository: Repository<Seller>,
-    @InjectRepository(Country) private readonly countryRepository: Repository<Country>,
     @InjectRepository(Buyer) private readonly buyerRepository: Repository<Buyer>,
+    @InjectRepository(Seller) private readonly sellerRepository: Repository<Seller>,
+    // @InjectRepository(Company) private readonly companyRepository: Repository<Company>,
+    // @InjectRepository(CompanyProduct) private readonly companyProductRepository: Repository<CompanyProduct>,
+    // @InjectRepository(Country) private readonly countryRepository: Repository<Country>,
     ) {}
 
   async readExcelFile(filePath: string) {
@@ -724,7 +723,7 @@ export class ExcelService {
 
   async saveToDatabaseSynchronously(data: any[]) {
     for (const row of data) {
-      await this.saveToDatabase2(row);
+      await this.saveToDatabase4(row);
     }
   }
 
@@ -732,44 +731,48 @@ export class ExcelService {
     return str.split(',').filter(item => item !== '').join(',');
   }
 
-  async saveToDatabase(row: any) {
-    const companyEntity = new Company();
-    companyEntity.company_idx                 = parseInt(row[1]);
-    companyEntity.name_kor                    = row[2];
-    companyEntity.name_eng                    = row[3];
+  // async saveToDatabase(row: any) {
+  //   const companyEntity = new Company();
+  //   companyEntity.company_idx                 = parseInt(row[1]);
+  //   companyEntity.name_kor                    = row[2];
+  //   companyEntity.name_eng                    = row[3];
 
-    const companyProductEntity = new CompanyProduct();
-    companyProductEntity.company_product_idx  = parseInt(row[4]);
-    companyProductEntity.category             = row[5];
-    companyProductEntity.category_detail      = row[6];
-    companyProductEntity.name_kor             = row[7];
-    companyProductEntity.name_eng             = row[8];
-    companyProductEntity.company_idx = companyEntity.company_idx;
+  //   const companyProductEntity = new CompanyProduct();
+  //   companyProductEntity.company_product_idx  = parseInt(row[4]);
+  //   companyProductEntity.category             = row[5];
+  //   companyProductEntity.category_detail      = row[6];
+  //   companyProductEntity.name_kor             = row[7];
+  //   companyProductEntity.name_eng             = row[8];
+  //   companyProductEntity.company_idx = companyEntity.company_idx;
 
-    const countCompanyByIdx = await this.companyRepository.count({
-      where: { company_idx: companyEntity.company_idx }
-    });
+  //   const countCompanyByIdx = await this.companyRepository.count({
+  //     where: { company_idx: companyEntity.company_idx }
+  //   });
 
-    if (countCompanyByIdx === 0) {
-      await this.companyRepository.save(companyEntity);
-    }
+  //   if (countCompanyByIdx === 0) {
+  //     await this.companyRepository.save(companyEntity);
+  //   }
 
-    const countCompanyProductByIdx = await this.companyProductRepository.count({
-      where: { company_product_idx: companyProductEntity.company_product_idx }
-    });
+  //   const countCompanyProductByIdx = await this.companyProductRepository.count({
+  //     where: { company_product_idx: companyProductEntity.company_product_idx }
+  //   });
 
-    if (countCompanyProductByIdx === 0) {
-      await this.companyProductRepository.save(companyProductEntity);
-    }
-  }
+  //   if (countCompanyProductByIdx === 0) {
+  //     await this.companyProductRepository.save(companyProductEntity);
+  //   }
+  // }
   
   async saveToDatabase2(row: any) {
     const entity = new Seller();
-    entity.seller_idx                 = parseInt(row[1]);
-    entity.business_type              = this.filtering(row[2]);
-    entity.industry                   = this.filtering(row[3]);
-    entity.export_countries           = this.filtering(this.change(row[4]));
-    entity.export_regions             = this.setAndFiltering(this.checkRegion(entity.export_countries));
+    entity.seller_idx          = parseInt(row[1]);
+    entity.business_type_codes = this.setAndFiltering(row[2]);
+    entity.industry_codes      = this.setAndFiltering(row[3]);
+    entity.export_countries    = this.setAndFiltering(this.change(row[4]));
+    entity.export_regions      = this.setAndFiltering(this.checkRegion(entity.export_countries));
+
+    if (entity.export_regions === '') {
+      entity.export_regions = 'Worldwide'
+    }
 
     await this.sellerRepository.save(entity);
   }
@@ -801,14 +804,13 @@ export class ExcelService {
 
   async saveToDatabase4(row: any) {
     const entity = new Buyer();
-    entity.buyer_idx            = parseInt(row[1]);
-    entity.business_type        = this.setAndFiltering(row[2]);
-    entity.industry             = this.setAndFiltering(row[3]);
-    entity.category_code_main   = this.filtering(row[4]);
-    entity.category_code_sub    = this.filtering(row[5]);
-    entity.interested_industry  = this.setAndFiltering(row[6]);
-    entity.interested_region    = this.setAndFiltering(this.changeRegion(row[7]));
-    entity.interested_country   = this.setAndFiltering(this.change2(row[8]));
+    entity.buyer_idx                      = parseInt(row[1]);
+    entity.business_type_codes            = this.setAndFiltering(row[2]);
+    entity.industry_codes                 = this.setAndFiltering(row[3]);
+    entity.interested_category_codes_main = this.setAndFiltering(row[4]);
+    entity.interested_category_codes_sub  = this.setAndFiltering(row[5]);
+    entity.interested_import_regions      = this.setAndFiltering(this.changeRegion(row[6]));
+    entity.interested_import_countries    = this.setAndFiltering(this.change2(row[7]));
 
     await this.buyerRepository.save(entity);
   }

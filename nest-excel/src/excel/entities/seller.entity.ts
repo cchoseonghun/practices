@@ -6,28 +6,10 @@ export class Seller {
   seller_idx: number;
 
   @Column('varchar')
-  company_name: string;
-
-  @Column('varchar')
-  ceo_name: string;
-
-  @Column('varchar')
-  postal_code: string;
-
-  @Column('text')
-  company_address: string;
-
-  @Column('varchar')
-  website_url: string;
-
-  @Column('varchar')
   business_type_codes: string;
 
   @Column('varchar')
   industry_codes: string;
-
-  @Column('varchar')
-  export_import_status_codes: string;
 
   @Column('varchar')
   export_regions: string;
@@ -35,24 +17,51 @@ export class Seller {
   @Column('varchar')
   export_countries: string;
 
-  @Column({ type: 'int', length: 4 })
-  established_year: string;
 
-  @Column('varchar')
-  intro_origin: string;
+  
 
-  @Column('varchar')
-  intro_saved: string;
+  // @Column('varchar')
+  // company_name: string;
 
-  @Column('text')
-  description: string;
+  // @Column('varchar')
+  // ceo_name: string;
 
-  @Column('varchar')
-  logo_origin: string;
+  // @Column('varchar')
+  // postal_code: string;
 
-  @Column('varchar')
-  logo_saved: string;
+  // @Column('text')
+  // company_address: string;
 
-  @Column('varchar')
-  promotional_video_link: string;
+  // @Column('varchar')
+  // website_url: string;
+
+  
+
+  
+
+  // @Column('varchar')
+  // export_import_status_codes: string;
+
+  
+
+  // @Column({ type: 'int' })
+  // established_year: number;
+
+  // @Column('varchar')
+  // intro_origin: string;
+
+  // @Column('varchar')
+  // intro_saved: string;
+
+  // @Column('text')
+  // description: string;
+
+  // @Column('varchar')
+  // logo_origin: string;
+
+  // @Column('varchar')
+  // logo_saved: string;
+
+  // @Column('varchar')
+  // promotional_video_link: string;
 }
