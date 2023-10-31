@@ -2,7 +2,7 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { ExcelService } from './excel.service';
 import * as path from 'path';
 
-@Controller('excel')
+@Controller()
 export class ExcelController {
   constructor(private readonly excelService: ExcelService) {}
 
@@ -31,7 +31,7 @@ export class ExcelController {
   //   return { message: 'Excel 데이터가 성공적으로 저장되었습니다.' };
   // }
 
-  @Get(':filename')
+  @Get('excel/:filename')
   async test(
     @Param('filename') filename: string, 
   ) {
@@ -41,5 +41,15 @@ export class ExcelController {
     await this.excelService.saveToDatabaseSynchronously(data);
 
     return { message: 'Excel 데이터가 성공적으로 저장되었습니다.' };
+  }
+
+  @Get('migration/:filename')
+  async migration(@Param('filename') filename: string) {
+    const excelFilePath = path.join(__dirname, `../../src/migration/${filename}.xlsx`);
+
+    const data = await this.excelService.readExcelFile(excelFilePath);
+    await this.excelService.activateSynchronously(data);
+
+    return { message: '파일 복사 완료' };
   }
 }

@@ -8,6 +8,9 @@ import { Seller } from './entities/seller.entity';
 import { Country } from './entities/country.entity';
 import { Buyer } from './entities/buyer.entity';
 
+import * as fs from 'fs';
+import * as path from 'path';
+
 const sample = {
   '01': 'DZ',
   '02': 'AR',
@@ -714,9 +717,9 @@ export class ExcelService {
   
     const data = [];
     worksheet.eachRow((row) => {
-      if (row.number !== 1) {
+      // if (row.number !== 1) {
         data.push(row.values);
-      }
+      // }
     });
     return data;
   }
@@ -830,6 +833,47 @@ export class ExcelService {
   setAndFiltering(str: string) {
     const set = new Set(str.split(','));
     return [...set].filter(item => item !== '').join(',');
+  }
+
+  async activateSynchronously(data: any[]) {
+    for (const row of data) {
+      await this.migrateFile(row);
+    }
+  }
+
+  private sourceFolder = path.join(__dirname, `../../src/before`);
+  private targetFolder = path.join(__dirname, `../../src/after`);
+  
+  async migrateFile(row: any) {
+    const filename = row[1].trim();
+    
+    if (filename !== '') {
+      try {
+        await this.copyFileWithSameName(this.sourceFolder, this.targetFolder, filename);
+        console.log(`파일 ${filename}을 복사했습니다.`);
+      } catch (error) {
+        console.error(`파일 복사 중 오류가 발생했습니다: ${error}`);
+      }
+    }
+  }
+
+  async copyFileWithSameName(sourceFolder: string, targetFolder: string, fileName: string): Promise<void> {
+    const sourceFilePath = path.join(sourceFolder, fileName);
+    const targetFilePath = path.join(targetFolder, fileName);
+  
+    if (fs.existsSync(sourceFilePath)) {
+      return new Promise((resolve, reject) => {
+        const readStream = fs.createReadStream(sourceFilePath);
+        const writeStream = fs.createWriteStream(targetFilePath);
+  
+        readStream.on('error', (err) => reject(err));
+        writeStream.on('error', (err) => reject(err));
+        writeStream.on('finish', () => resolve());
+        readStream.pipe(writeStream);
+      });
+    } else {
+      throw new Error(`파일 ${fileName}을 원본 폴더에서 찾을 수 없습니다.`);
+    }
   }
 }
 
