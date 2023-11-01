@@ -841,8 +841,8 @@ export class ExcelService {
     }
   }
 
-  private sourceFolder = path.join(__dirname, `../../src/before`);
-  private targetFolder = path.join(__dirname, `../../src/after`);
+  private sourceFolder = path.join(__dirname, `../../src/imageMigrationResult/seller/before`);
+  private targetFolder = path.join(__dirname, `../../src/imageMigrationResult/seller/after`);
   
   async migrateFile(row: any) {
     const filename = row[1].trim();
@@ -850,7 +850,7 @@ export class ExcelService {
     if (filename !== '') {
       try {
         await this.copyFileWithSameName(this.sourceFolder, this.targetFolder, filename);
-        console.log(`파일 ${filename}을 복사했습니다.`);
+        // console.log(`파일 ${filename}을 복사했습니다.`);
       } catch (error) {
         console.error(`파일 복사 중 오류가 발생했습니다: ${error}`);
       }
