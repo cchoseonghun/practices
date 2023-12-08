@@ -1,0 +1,228 @@
+{
+  "Created": "전시기획 1팀",
+  "id": 1,
+  "metaData": {
+    "title": "HOME Page",
+    "description": "This is an example web page.",
+    "keywords": [
+      "example",
+      "web",
+      "page"
+    ],
+    "viewport": "width=device-width, initial-scale=1.0",
+    "openGraph": {
+      "type": "website",
+      "title": "엑스포럼 퇴근팀",
+      "description": "퇴근팀",
+      "openGraphImage": "http://www.exporum.com/data/upload/banner/16002258752.jpg"
+    }
+  },
+  "nav": {
+    "Style": {
+      "color": "#ddd",
+      "Logo": "http://www.exporum.com/assets/kr/images/common/logo.png"
+    },
+    "navArray": [
+      {
+        "id": 1,
+        "title": "전시",
+        "link": "exhibition"
+      },
+      {
+        "id": 2,
+        "title": "기획",
+        "link": "plan"
+      },
+      {
+        "id": 3,
+        "title": "개발",
+        "link": "dev"
+      },
+      {
+        "id": 4,
+        "title": "회의",
+        "link": "meeting"
+      },
+      {
+        "id": 5,
+        "title": "퇴근",
+        "link": "home"
+      }
+    ]
+  },
+  "sections": [
+    {  
+      "id": 1,
+      "order": 4,
+      "height": "500px",
+      "backgrond": "",
+      "child": [
+        {
+          "data": {
+            "type": "button",
+            "content": "섹션 1번 버튼",
+            "alertMessage": "1번 버튼 입니다"
+          }
+        },
+        {
+          "data": {
+            "type": "text",
+            "content": "섹션 1번 텍스트"
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "order": 1,
+      "height": "400px",
+      "backgrond": "",
+      "child": [
+        {
+          "data": {
+            "type": "button",
+            "content": "섹션 2번 버튼"
+          }
+        },
+        {
+          "data": {
+            "type": "text",
+            "content": "섹션 2번 텍스트"
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "order": 3,
+      "height": "100px",
+      "backgrond": "#ddd",
+      "child": [
+        {
+          "data": {
+            "type": "button",
+            "content": "섹션 3번 버튼"
+          }
+        },
+        {
+          "data": {
+            "type": "text",
+            "content": "섹션 3번 텍스트"
+          }
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "order": 2,
+      "height": "600px",
+      "backgrond": "blue",
+      "child": [
+        {
+          "data": {
+            "type": "button",
+            "content": "섹션 4번 버튼"
+          }
+        },
+        {
+          "data": {
+            "type": "text",
+            "content": "섹션 4번 텍스트"
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "order": 5,
+      "height": "700px",
+      "backgrond": "yellow",
+      "child": [
+        {
+          "data": {
+            "type": "button",
+            "content": "섹션 5번 버튼"
+          }
+        },
+        {
+          "data": {
+            "type": "text",
+            "content": "섹션 5번 텍스트"
+          }
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "pageId": "exhibition",
+      "metaData": {
+        "title": "전시",
+        "description": "전시 페이지입니다",
+        "viewport": "width=device-width, initial-scale=1.0",
+        "openGraph": {
+          "type": "website",
+          "title": "DX팀",
+          "description": "엑스포럼 DX팀",
+          "openGraphImage": "http://www.exporum.com/data/upload/banner/16002258752.jpg"
+        }
+      }
+    },
+    {
+      "pageId": "plan",
+      "metaData": {
+        "title": "전시",
+        "description": "전시 페이지입니다",
+        "viewport": "width=device-width, initial-scale=1.0",
+        "openGraph": {
+          "type": "website",
+          "title": "엑스포럼 전시팀",
+          "description": "전시팀",
+          "openGraphImage": "http://www.exporum.com/data/upload/banner/16002258752.jpg"
+        }
+      }
+    },
+    {
+      "pageId": "dev",
+      "metaData": {
+        "title": "개발",
+        "description": "개발 페이지입니다",
+        "viewport": "width=device-width, initial-scale=1.0",
+        "openGraph": {
+          "type": "website",
+          "title": "엑스포럼 개발팀",
+          "description": "개발팀",
+          "openGraphImage": "http://www.exporum.com/data/upload/banner/16002258752.jpg"
+        }
+      }
+    },
+    {
+      "pageId": "meeting",
+      "metaData": {
+        "title": "회의",
+        "description": "회의 페이지입니다",
+        "viewport": "width=device-width, initial-scale=1.0",
+        "openGraph": {
+          "type": "website",
+          "title": "엑스포럼 회의팀",
+          "description": "회의팀",
+          "openGraphImage": "http://www.exporum.com/data/upload/banner/16002258752.jpg"
+        }
+      }
+    },
+    {
+      "pageId": "home",
+      "metaData": {
+        "title": "퇴근",
+        "description": "퇴근 페이지입니다",
+        "viewport": "width=device-width, initial-scale=1.0",
+        "openGraph": {
+          "type": "website",
+          "title": "엑스포럼 퇴근팀",
+          "description": "퇴근팀",
+          "openGraphImage": "http://www.exporum.com/data/upload/banner/16002258752.jpg"
+        }
+      }
+    }
+  ]
+}
