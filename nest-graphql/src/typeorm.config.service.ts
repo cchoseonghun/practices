@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { User } from './users/users.entity';
+import { User } from './users/entities/users.entity';
+import { Metadata } from './metadata/entities/metadata.entity';
+import { OpenGraph } from './opengraph/entities/opengraph.entity';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -17,7 +19,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: this.configService.get<string>('DATABASE_NAME'),
       synchronize: JSON.parse(this.configService.get<string>('DATABASE_SYNC')), // 배포 시 false
       logging: false,
-      entities: [User],
+      entities: [User, Metadata, OpenGraph],
     };
   }
 }
