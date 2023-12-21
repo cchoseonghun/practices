@@ -17,14 +17,14 @@ export class JwtMiddleware implements NestMiddleware {
       // }
       // GraphQL Playground 하단 HTTP HEADERS에 위와 같이 세팅하면 headers가 세팅된다. 
       const token = req.headers['x-jwt'];
-      const decoded = this.jwtService.verify(token.toString());
-      if (typeof decoded === 'object' && decoded.hasOwnProperty('id')) {
-        try {
+      try {
+        const decoded = this.jwtService.verify(token.toString());
+        if (typeof decoded === 'object' && decoded.hasOwnProperty('id')) {
           const user = await this.usersService.findById(decoded['id']);
           // const { password, ...user } = await this.usersService.findById(decoded['id']);
           req['user'] = user;
-        } catch (e) {}
-      }
+        }
+      } catch (e) {}
     }
     next();
   }
