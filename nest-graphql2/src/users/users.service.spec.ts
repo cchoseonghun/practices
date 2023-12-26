@@ -18,6 +18,7 @@ const mockRepository = () => ({
   findOne: jest.fn(),
   save: jest.fn(), 
   create: jest.fn(), 
+  findOneOrFail: jest.fn(), 
 });
 // 함수를 반환. 각 호출 시마다 새로운 객체를 생성하는데 
 // 각 테스트에서 별도의 인스턴스를 사용하여 테스트 간의 상태가 공유되지 않도록 하여 
@@ -175,7 +176,24 @@ describe('UserService', () => {
     });
   });
 
-  it.todo('findById');
+  // it.todo('findById');
+  describe('findById', () => {
+    const findByIdArgs = {
+      id: 1,
+    };
+    
+    it('should find an existing user', async () => {
+      usersRepository.findOneOrFail.mockResolvedValue(findByIdArgs);
+      const result = await service.findById(1);
+      expect(result).toEqual({ ok: true, user: findByIdArgs });
+    });
+
+    it('should fail if no user is found', async () => {
+      usersRepository.findOneOrFail.mockRejectedValue(new Error());
+      const result = await service.findById(1);
+      expect(result).toEqual({ ok: false, error: 'User Not Found' });
+    });
+  });
   it.todo('editProfile');
   it.todo('verifyEmail');
 });
