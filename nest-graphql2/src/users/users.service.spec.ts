@@ -19,6 +19,7 @@ const mockRepository = () => ({
   save: jest.fn(), 
   create: jest.fn(), 
   findOneOrFail: jest.fn(), 
+  delete: jest.fn(), 
 });
 // 함수를 반환. 각 호출 시마다 새로운 객체를 생성하는데 
 // 각 테스트에서 별도의 인스턴스를 사용하여 테스트 간의 상태가 공유되지 않도록 하여 
@@ -251,10 +252,48 @@ describe('UserService', () => {
       usersRepository.findOne.mockRejectedValue(new Error());
 
       const result = await service.editProfile(1, { email: '12' });
-      
+
       expect(result).toEqual({ ok: false, error: 'Could not update profile.' });
     });
   });
 
-  it.todo('verifyEmail');
+  // it.todo('verifyEmail');
+  describe('verifyEmail', () => {
+    it('should verify email', async () => {
+      const mockedVerification = {
+        user: { verified: false },
+        id: 1,
+      };
+      verificationsRepository.findOne.mockResolvedValue(mockedVerification);
+
+      const result = await service.verifyEmail('');
+
+      expect(verificationsRepository.findOne).toHaveBeenCalledTimes(1);
+      expect(verificationsRepository.findOne).toHaveBeenCalledWith({ where: expect.any(Object), relations: expect.any(Array) });
+
+      expect(usersRepository.save).toHaveBeenCalledTimes(1);
+      expect(usersRepository.save).toHaveBeenCalledWith({ verified: true });
+
+      expect(verificationsRepository.delete).toHaveBeenCalledTimes(1);
+      expect(verificationsRepository.delete).toHaveBeenCalledWith(mockedVerification.id);
+
+      expect(result).toEqual({ ok: true });
+    });
+
+    it('should fail on verification not found', async () => {
+      verificationsRepository.findOne.mockResolvedValue(undefined);
+
+      const result = await service.verifyEmail('');
+      
+      expect(result).toEqual({ ok: false, error: 'Verification not found.' });
+    });
+
+    it('should fail on exception', async () => {
+      verificationsRepository.findOne.mockRejectedValue(new Error());
+
+      const result = await service.verifyEmail('');
+
+      expect(result).toEqual({ ok: false, error: 'Could not verify email.' });
+    });
+  });
 });
