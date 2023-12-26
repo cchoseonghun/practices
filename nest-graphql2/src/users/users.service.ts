@@ -57,7 +57,7 @@ export class UsersService {
       return { ok: true, token };
 
     } catch (error) {
-      return { ok: false, error };
+      return { ok: false, error: `Can't log user in.` };
     }
   }
 
