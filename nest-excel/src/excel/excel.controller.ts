@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Header, Param, Res } from '@nestjs/common';
 import { ExcelService } from './excel.service';
 import * as path from 'path';
 
@@ -38,9 +38,11 @@ export class ExcelController {
     const excelFilePath = path.join(__dirname, `../../src/target/${filename}.xlsx`);
 
     const data = await this.excelService.readExcelFile(excelFilePath);
-    await this.excelService.saveToDatabaseSynchronously(data);
+    // await this.excelService.saveToDatabaseSynchronously(data);
 
-    return { message: 'Excel 데이터가 성공적으로 저장되었습니다.' };
+    // return { message: 'Excel 데이터가 성공적으로 저장되었습니다.' };
+    const result = await this.excelService.saveToDatabaseSynchronously(data);;
+    return result;
   }
 
   @Get('migration/:filename')
@@ -51,5 +53,25 @@ export class ExcelController {
     await this.excelService.activateSynchronously(data);
 
     return { message: '파일 복사 완료' };
+  }
+
+  @Get('jsonToExcel')
+  @Header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+  @Header('Content-Disposition', 'attachment; filename=users.xlsx')
+  save(@Res() res) {
+    // this.excelService.jsonToExcel(res);
+  }
+
+  @Get('combination')
+  @Header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+  @Header('Content-Disposition', 'attachment; filename=users.xlsx')
+  async combination(@Res() res) {
+    const iso3Path = path.join(__dirname, `../../src/target/iso3.xlsx`);
+    const iso2Path = path.join(__dirname, `../../src/target/iso2.xlsx`);
+
+    const iso3Data = await this.excelService.readExcelFile(iso3Path);
+    const iso2Data = await this.excelService.readExcelFile(iso2Path);
+
+    this.excelService.combination(res, iso3Data, iso2Data);
   }
 }

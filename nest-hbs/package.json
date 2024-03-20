@@ -1,0 +1,27 @@
+{
+  "name": "nest-hbs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/src/main",
+  "scripts": {
+    "build": "nest build",
+    "start:dev": "nest start --watch",
+    "start:prod": "node ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@nestjs/common": "^10.3.3",
+    "@nestjs/core": "^10.3.3",
+    "@nestjs/platform-express": "^10.3.3",
+    "express": "^4.18.3",
+    "hbs": "^4.2.0"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.3.2",
+    "@types/hbs": "^4.0.4",
+    "@types/node": "^20.11.25",
+    "typescript": "^5.4.2"
+  }
+}

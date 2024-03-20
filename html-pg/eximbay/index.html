@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>PG TEST</h1>
+
+    <button onclick="payment();">결제</button>
+
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-1.12.4.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://api-test.eximbay.com/v1/javascriptSDK.js"
+    ></script>
+
+    <script>
+      function payment() {
+        EXIMBAY.request_pay({
+          fgkey:
+            "7BF65F18B760805AB168B68BE4B299808625F736E1E417463822B62693FB9DF5",
+          payment: {
+            transaction_type: "PAYMENT",
+            order_id: "20220819105102",
+            currency: "USD",
+            amount: "1",
+            lang: "EN",
+          },
+          merchant: {
+            mid: "1849705C64",
+          },
+          buyer: {
+            name: "eximbay",
+            email: "test@eximbay.com",
+          },
+          url: {
+            return_url: "eximbay.com",
+            status_url: "eximbay.com",
+          },
+        });
+      }
+    </script>
+  </body>
+</html>

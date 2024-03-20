@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>App</title>
+  </head>
+
+  {{!-- {{> head}} --}}
+
+  <body>
+    {{!-- {{ message }} --}}
+    <h1>title</h1>
+  </body>
+  <script src="./view.js"></script>
+  <script>
+    var data = {{{stringify data}}};
+    data.forEach(item => {
+      console.log('Name:', item.name);
+      console.log('Age:', item.age);
+    });
+    </script>
+</html>
