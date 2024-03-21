@@ -1,11 +1,20 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { OrdersModule } from './orders/orders.module';
-import { PaymentsModule } from './payments/payments.module';
-import { ProductsModule } from './products/products.module';
+import { ConfigModule } from '@nestjs/config';
+import envConfig from './common/env.config';
+import { DatabaseModule } from './common/database.module';
+import { ProductsModule } from './biz/products/products.module';
+import { UsersModule } from './biz/users/users.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, OrdersModule, PaymentsModule, ProductsModule]
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: [`.env`],
+      isGlobal: true,
+      load: [envConfig],
+    }),
+    DatabaseModule, 
+    ProductsModule, 
+    UsersModule
+  ], 
 })
 export class AppModule {}
